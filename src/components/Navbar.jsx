@@ -78,7 +78,7 @@ export function Navbar({ onOpenCart, onOpenGuide, searchQuery, onSearchChange })
           </div>
           <div>
             <span className="brand-name">NovaShop</span>
-            <span className="brand-tag">Hooks Edition</span>
+            <span className="brand-tag">React Store</span>
           </div>
         </div>
 

@@ -8,17 +8,17 @@ export function HeroBanner({ onOpenGuide, onScrollToProducts }) {
       <div className="hero-content">
         <div className="hero-pill">
           <Sparkles size={14} className="text-accent" />
-          <span>Complete React 19 Hooks Showcase</span>
+          <span>Built with React & Hooks</span>
         </div>
 
         <h1 className="hero-title">
           Modern E-Commerce, <br />
-          <span className="text-gradient">Engineered with Every React Hook.</span>
+          <span className="text-gradient">Simple, Fast & Responsive.</span>
         </h1>
 
         <p className="hero-description">
-          An interactive, production-grade store built to master all 13 standard React hooks.
-          Inspect real-time state transitions, memoized calculations, custom hooks, and imperative handles.
+          A clean e-commerce store built using React. Includes a dynamic product catalog,
+          shopping cart, promotional discounts, and full coverage of React hooks.
         </p>
 
         <div className="hero-cta-group">

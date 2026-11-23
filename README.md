@@ -1,16 +1,18 @@
-# 🛍️ NovaShop — React Hooks Masterclass E-Commerce
+# 🛍️ NovaShop — React E-Commerce
 
-A modern, high-performance, fully functional React e-commerce application built to demonstrate and master **all 13 standard React hooks** in real-world production scenarios.
+A modern, responsive e-commerce web application built using **React** and **Vite**.
+
+This project implements a full e-commerce shopping experience — featuring product filtering, live search, a shopping cart with promotional discounts, and checkout — while demonstrating how each of the standard React hooks is applied in real components.
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Getting Started
 
 ```bash
 # 1. Install dependencies
 npm install
 
-# 2. Start local development server
+# 2. Run the development server
 npm run dev
 
 # 3. Build for production
@@ -19,68 +21,69 @@ npm run build
 
 ---
 
-## ⚡ React Hooks Architecture & Deep Dive
+## ⚡ React Hooks Used in This Project
 
-| # | Hook | Category | Role in NovaShop | Key Reason for Choosing It |
+| # | Hook | Category | Where It's Used | Why It Was Used |
 |---|---|---|---|---|
-| 1 | **`useState`** | State | Search query, price limits, modal states, button feedback | Manages local, ephemeral component state that triggers visual updates upon mutation. |
-| 2 | **`useEffect`** | Side Effects | Keyboard shortcuts (`Cmd+K`, `Esc`), Tab title sync, Countdown timer cleanup | Synchronizes React state with external browser APIs, DOM events, and timers with teardown handlers. |
-| 3 | **`useContext`** | Context | `CartContext`, `ThemeContext`, `NotificationContext` | Avoids prop drilling, providing ambient access to cart, theme, and notifications across deeply nested components. |
-| 4 | **`useReducer`** | State Logic | `cartReducer` (items, quantities, coupon codes, subtotals) | Centralizes complex relational cart mutations in a pure, predictable, testable reducer function. |
-| 5 | **`useMemo`** | Optimization | Product filtering/sorting, financial summary (tax, shipping, discount) | Caches expensive calculations between renders; only recomputes when dependencies change. |
-| 6 | **`useCallback`** | Optimization | `addToCart`, `quickView`, `removeFromCart` passed to memoized cards | Stabilizes function reference identity across parent re-renders so `React.memo(ProductCard)` avoids unnecessary re-renders. |
-| 7 | **`useRef`** | DOM / Mutable | Search input auto-focus (`Cmd+K`), `usePrevious` count comparison, checkout button focus | Direct DOM access without re-rendering, and storing mutable values across renders without triggering a re-render. |
-| 8 | **`useLayoutEffect`** | DOM Measurement | Measuring Flash Sale Banner height synchronously before paint | Runs before the browser paints to eliminate visual flicker and Cumulative Layout Shift (CLS). |
-| 9 | **`useId`** | Accessibility | Form fields in Checkout Modal & Catalog Filter sliders | Generates collision-proof, stable IDs for accessible `<label>` and `<input>` pairings. |
-| 10 | **`useTransition`** | Concurrency | Category switching & sorting with `isPending` spinner | Marks heavy catalog updates as interruptible transitions, ensuring typing and clicks stay responsive. |
-| 11 | **`useDeferredValue`** | Concurrency | Live search query filtering | Keeps keystroke typing immediate while deferring heavy catalog list re-filtering. |
-| 12 | **`useImperativeHandle`** | Imperative API | `QuickViewModal` exposing `open()`, `close()`, `shake()` | Encapsulates dialog internal states while providing a clean imperative handle API to parent components. |
-| 13 | **`useDebugValue`** | DevTools | Formatted labels in custom hook `useLocalStorage` | Provides readable debug inspection tags inside React Developer Tools. |
+| 1 | **`useState`** | State | Search input, filters, modal toggles, button states | Manages local component state that triggers a re-render when modified. |
+| 2 | **`useEffect`** | Side Effects | Keyboard shortcuts (`⌘K`, `Esc`), document title, countdown timer | Synchronizes components with browser APIs, window listeners, and interval timers with cleanup. |
+| 3 | **`useContext`** | Context | `CartContext`, `ThemeContext`, `NotificationContext` | Shares global state (cart items, theme, notifications) across the tree without prop-drilling. |
+| 4 | **`useReducer`** | State Logic | `cartReducer` | Centralizes shopping cart operations (add, remove, change quantity, apply coupons) in a pure reducer function. |
+| 5 | **`useMemo`** | Optimization | Product filtering/sorting, cart financial calculations | Caches expensive calculations (tax, shipping, discounts, filtered product list) across renders. |
+| 6 | **`useCallback`** | Optimization | `addToCart`, `quickView`, and action handlers | Keeps callback function references stable across renders to prevent unnecessary re-renders in memoized child cards. |
+| 7 | **`useRef`** | DOM / Values | Search input focus (`⌘K`), previous cart item count | Directly focuses DOM elements and retains mutable values across renders without causing new renders. |
+| 8 | **`useLayoutEffect`** | DOM Measure | Promotional banner height measurement | Measures DOM dimensions synchronously before the browser paints to eliminate visual layout shifts (CLS). |
+| 9 | **`useId`** | Accessibility | Checkout form fields & filter inputs | Generates unique, accessible IDs for `<label>` and `<input>` associations without collisions. |
+| 10 | **`useTransition`** | Concurrency | Catalog category switching | Marks heavy filter updates as non-blocking transitions so the UI stays responsive, with an `isPending` state. |
+| 11 | **`useDeferredValue`** | Concurrency | Live product search query | Keeps typing input immediate while deferring catalog re-filtering until typing pauses. |
+| 12 | **`useImperativeHandle`** | Imperative API | `QuickViewModal` (`open`, `close`, `shake`) | Exposes clean, custom imperative methods to the parent component via ref. |
+| 13 | **`useDebugValue`** | DevTools | Custom `useLocalStorage` hook | Displays readable debug labels for custom hooks in React Developer Tools. |
 
 ---
 
-## 📂 Project Architecture
+## 📂 Project Structure
 
 ```
 react-ecommerce/
-├── index.html
-├── package.json
-├── vite.config.js
-├── src/
-│   ├── main.jsx                     # Application root mount
-│   ├── App.jsx                      # Main orchestrator (useTransition, useDeferredValue, useRef, useCallback)
-│   ├── index.css                    # Responsive theme styling (Dark/Light modes, animations)
-│   ├── data/
-│   │   └── products.js              # Catalog items, categories, and tags
-│   ├── context/
-│   │   ├── CartContext.jsx          # useReducer + useContext + useMemo + useCallback
-│   │   ├── ThemeContext.jsx         # useContext + useEffect + useLocalStorage
-│   │   └── NotificationContext.jsx  # useContext + useState + useCallback
-│   ├── hooks/
-│   │   ├── useLocalStorage.js       # Custom hook with useDebugValue, useState, useEffect
-│   │   ├── useCountdown.js          # Custom hook with useState, useEffect cleanup interval
-│   │   └── usePrevious.js           # Custom hook with useRef, useEffect
-│   └── components/
-│       ├── Navbar.jsx               # useRef (focus), useEffect (Cmd+K, title), useCart, useTheme
-│       ├── FlashSaleTimer.jsx       # useLayoutEffect (DOM measure), useCountdown, useRef
-│       ├── HeroBanner.jsx           # Welcome hero & features
-│       ├── ProductFilters.jsx       # useTransition (isPending), useId
-│       ├── ProductCard.jsx          # React.memo, useState, useCallback consumer
-│       ├── ProductList.jsx          # useMemo (filtering & sorting catalog)
-│       ├── QuickViewModal.jsx       # useImperativeHandle, forwardRef, useEffect, useState
-│       ├── CartDrawer.jsx           # useCart (useReducer), useId, useRef
-│       ├── CheckoutModal.jsx        # useId (accessible form inputs), useState, useCart
-│       ├── HooksGuideModal.jsx      # Interactive live in-app Hooks Inspector
-│       └── HooksBadge.jsx           # Educational hook pills
+├── index.html                       # HTML template
+├── package.json                     # Dependencies and scripts
+├── vite.config.js                   # Vite configuration
+├── README.md                        # Project documentation
+└── src/
+    ├── main.jsx                     # Entry point
+    ├── App.jsx                      # Main app component
+    ├── index.css                    # Styling and theme variables
+    ├── data/
+    │   └── products.js              # Mock product data
+    ├── context/
+    │   ├── CartContext.jsx          # Shopping cart context with useReducer
+    │   ├── ThemeContext.jsx         # Dark/light theme context
+    │   └── NotificationContext.jsx  # Toast notification context
+    ├── hooks/
+    │   ├── useLocalStorage.js       # Persistent storage with useDebugValue
+    │   ├── useCountdown.js          # Countdown timer with cleanup
+    │   └── usePrevious.js           # Value tracking with useRef
+    └── components/
+        ├── Navbar.jsx               # Header with search (useRef) and shortcuts
+        ├── FlashSaleTimer.jsx       # Deal banner using useLayoutEffect
+        ├── HeroBanner.jsx           # Store hero section
+        ├── ProductFilters.jsx       # Category and price filters (useTransition)
+        ├── ProductCard.jsx          # Product card with React.memo & useCallback
+        ├── ProductList.jsx          # Filtered catalog grid (useMemo)
+        ├── QuickViewModal.jsx       # Product modal with useImperativeHandle
+        ├── CartDrawer.jsx           # Slide-out cart drawer
+        ├── CheckoutModal.jsx        # Form with useId
+        ├── HooksGuideModal.jsx      # In-app reference guide
+        └── HooksBadge.jsx           # Educational badges
 ```
 
 ---
 
-## 🎨 Interactive Features
+## ✨ Features
 
-- **Live In-App Hooks Guide**: Click **"Hooks Guide (13 Hooks)"** in the top navbar to view real-time state, code snippets, when to use, and common pitfalls for every hook.
-- **Auto-Focus Search (`⌘K` or `Ctrl+K`)**: Demonstrates `useRef` and `useEffect`.
-- **Flash Sale Banner**: Demonstrates `useCountdown` interval cleanup and `useLayoutEffect` synchronous layout measurement.
-- **Cart & Coupon System**: Try coupons `SAVE20` (20% off), `HALFOFF` (50% flash off), or `FREESHIP`.
-- **Accessible Checkout**: Demonstrates `useId` generating accessible form pairs.
-- **Dark & Light Mode**: Demonstrates `useLocalStorage` with `useDebugValue` and `ThemeContext`.
+- **Product Catalog:** Filter by category, price range, and sort by price or rating.
+- **Instant Search:** Fast search bar with keyboard shortcut (`⌘K` or `Ctrl+K`) and deferred query updates.
+- **Cart & Discounts:** Add/remove items, adjust quantities, and apply promo codes (`SAVE20`, `HALFOFF`, `FREESHIP`).
+- **Accessible Checkout:** Form validation and accessible inputs connected via `useId`.
+- **Dark & Light Modes:** Saved in localStorage and toggled smoothly.
+- **Built-in Hooks Guide:** Click **"Hooks Guide"** in the navigation bar to see an in-app reference for each hook used.

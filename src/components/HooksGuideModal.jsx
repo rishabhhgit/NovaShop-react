@@ -279,9 +279,9 @@ useDebugValue(storedValue, (val) => {
           <div className="guide-title-row">
             <BookOpen size={24} className="guide-header-icon" />
             <div>
-              <h2 className="guide-title">React Hooks Masterclass Inspector</h2>
+              <h2 className="guide-title">React Hooks Guide & Reference</h2>
               <p className="guide-subtitle">
-                Interactive reference: Why and how every React hook is implemented in this e-commerce store.
+                A simple reference showing why and how each React hook is used in this e-commerce app.
               </p>
             </div>
           </div>
